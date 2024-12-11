@@ -1,6 +1,6 @@
 package LinkedList;
 
-public class SinglyLinkedList {
+public class SinglyLinkedList implements LinkedList{
     private Node head;
     private int capacity;
 
@@ -32,16 +32,19 @@ public class SinglyLinkedList {
         this.capacity=arr.length;
     }
 
+    @Override
     public int getCapacity()
     {
         return this.capacity;
     }
 
+    @Override
     public Node getHead()
     {
         return this.head;
     }
 
+    @Override
     public Node search(int data)
     {
         //to be implemented
@@ -57,6 +60,7 @@ public class SinglyLinkedList {
         return null;
     }
 
+    @Override
     public void insertBegin(int data)
     {
         Node node = new Node(data);
@@ -73,6 +77,7 @@ public class SinglyLinkedList {
         this.capacity++;
     } 
 
+    @Override
     public void insertBegin(Node node)
     {
         if(this.head==null)
@@ -88,6 +93,7 @@ public class SinglyLinkedList {
 
     } 
 
+    @Override
     public void insertEnd(int data)
     {
         Node node = new Node(data);
@@ -107,6 +113,7 @@ public class SinglyLinkedList {
         this.capacity++;
     }
 
+    @Override
     public void insertEnd(Node node)
     {
 
@@ -126,6 +133,7 @@ public class SinglyLinkedList {
 
     }
 
+    @Override
     public void insertMiddle(int pos, int data)
     {
         // if the pos is greater than the capacity then insert at the end
@@ -153,6 +161,7 @@ public class SinglyLinkedList {
 
     }
 
+    @Override
     public void insertMiddle(int pos, Node node)
     {
             // if the pos is greater than the capacity then insert at the end
@@ -179,6 +188,8 @@ public class SinglyLinkedList {
             
     }
 
+
+    @Override
     public void insertBefore(Node node, int data)
     {
             if(node!=null)
@@ -197,6 +208,8 @@ public class SinglyLinkedList {
             
     }
 
+
+    @Override
     public void insertBefore(Node node, Node newNode)
     {
         if(node!=null)
@@ -225,6 +238,8 @@ public class SinglyLinkedList {
             
     }
 
+
+    @Override
     public void insertAfter(Node node, int data)
     {
         if(node!=null)
@@ -239,6 +254,8 @@ public class SinglyLinkedList {
             
     }
 
+
+    @Override
     public void insertAfter(Node node, Node newNode)
     {
         if(node!=null)
@@ -269,6 +286,8 @@ public class SinglyLinkedList {
 
     }
 
+
+    @Override
     public void deleteEnd()
     {
         if(this.capacity==0)
@@ -296,6 +315,8 @@ public class SinglyLinkedList {
 
     }
 
+
+    @Override
     public void deleteBefore(Node node)
     {
         if(node!=null)
@@ -316,6 +337,7 @@ public class SinglyLinkedList {
                     if(temp.getNext().getNext()==node)
                     {
                         temp.setNext(node);
+                        this.capacity--;
                     }
                     else
                     {
@@ -327,6 +349,8 @@ public class SinglyLinkedList {
         }
     }
 
+
+    @Override
     public void deleteAfter(Node node)
     {
         if(node!=null)
@@ -338,15 +362,37 @@ public class SinglyLinkedList {
             if(node.getNext()!=null)
             {
                 node.setNext(node.getNext());
+                this.capacity--;
             }
         }
 
     }
 
 
+    @Override
     public void deleteMiddle(int pos)
     {
-        
+        Node temp = this.head;
+        if(pos>=this.capacity)
+        {
+            this.deleteEnd();
+        }
+        else if(pos<=0)
+        {
+            this.deleteBegin();
+        }
+        else 
+        {
+            pos--;
+            while(pos>0)
+            {
+                temp = temp.getNext();
+                pos--;
+
+            }
+            this.deleteAfter(temp);
+        }
+    
     }
 
     public void reverseList()
@@ -371,6 +417,7 @@ public class SinglyLinkedList {
 
     }
 
+    @Override
     public void printList()
     {
         Node temp = this.head;
@@ -382,8 +429,15 @@ public class SinglyLinkedList {
         System.out.print("null\n");
 
     }
+
+    @Override
     public boolean isEmpty()
     {
+        if(this.capacity>0)
+        {
+            return false;
+        }
+        
         return true;
     }
     

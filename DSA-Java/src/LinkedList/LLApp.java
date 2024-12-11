@@ -5,12 +5,16 @@ public class LLApp {
     public static void main(String[] args)
     {
 
-        int arr [] ={1,2,3};
-        SinglyLinkedList list = new SinglyLinkedList(arr);
-        list.printList();
+        int arr [] ={};
+        //SinglyLinkedList list = new SinglyLinkedList(arr);
+        //list.printList();
 
-        list.reverseList();
-        list.printList();
+        //list.reverseList();
+        //list.printList();
+
+        LinkedList clist = new CircularLinkedList(arr);
+        
+        clist.printList();
 
     }
 }
