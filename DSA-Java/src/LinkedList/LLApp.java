@@ -5,7 +5,7 @@ public class LLApp {
     public static void main(String[] args)
     {
 
-        int arr [] ={};
+        int arr [] ={1};
         //SinglyLinkedList list = new SinglyLinkedList(arr);
         //list.printList();
 

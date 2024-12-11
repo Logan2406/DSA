@@ -2,83 +2,135 @@ package LinkedList;
 
 public class CircularLinkedList implements LinkedList {
 
-    private Node head;
+    private Node last;
     private int capacity;
 
     public CircularLinkedList()
     {
-        this.head =null;
+        this.last =null;
         this.capacity=0;
     }
 
     public CircularLinkedList(int arr[])
     {
-        if(arr.length<=0)
+        Node temp =null;
+        Node prev =null;
+        for(int i=0; i<arr.length;i++)
         {
-
-        }
-        else
-        {
-            Node curr = null;
-            for(int i=0;i<arr.length;i++)
+            Node newNode = new Node(arr[i]);
+            this.last = newNode;
+            if(i==0)
             {
-                Node temp = new Node(arr[i]);
-                
-                if(i==0)
-                {
-                    this.head = temp;
-                    curr = temp;
-                }
-                else
-                {
-                    curr.setNext(temp);
-                    curr = temp;
-                }
+                temp = newNode;
             }
-            curr.setNext(this.head);
-            this.capacity = arr.length;
+            else
+            {
+                prev.setNext(newNode);
+            }
+            prev = newNode;
+            newNode.setNext(temp);
         }
+        this.capacity = arr.length;
+
     }
 
     @Override
     public int getCapacity() {
-       return 0;
+       return this.capacity;
     }
 
     @Override
     public Node getHead() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getHead'");
+        return this.last.getNext();
+    }
+
+    public Node getLast()
+    {
+        return this.last;
     }
 
     @Override
     public Node search(int data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'search'");
+        if(this.last!=null)
+        {
+            Node head = this.last.getNext();
+            Node temp = head;
+            while(temp.getNext()!=head)
+            {
+                if(temp.getData() == data)
+                {
+                    return temp;
+                }
+                temp = temp.getNext();
+            }
+        }
+        return null;
     }
 
     @Override
     public void insertBegin(int data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insertBegin'");
+
+        Node temp = new Node(data);
+        if(this.last!=null)
+        {
+            Node head = this.last.getNext();
+            this.last.setNext(temp);
+            temp.setNext(head);
+        }
+        else
+        {
+            this.last = temp;
+            temp.setNext(temp);
+        }
     }
 
     @Override
     public void insertBegin(Node node) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insertBegin'");
+        if(this.last!=null)
+        {
+            Node head = this.last.getNext();
+            this.last.setNext(node);
+            node.setNext(head);
+        }
+        else
+        {
+            this.last = node;
+            node.setNext(node);
+        }
     }
 
     @Override
     public void insertEnd(int data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insertEnd'");
+
+        Node temp = new Node(data);
+        if(this.last!=null)
+        {
+            Node head = this.last.getNext();
+            this.last.setNext(temp);
+            temp.setNext(head);
+        }
+        else
+        {
+            this.last = temp;
+            temp.setNext(temp);
+        }
+
+
     }
 
     @Override
     public void insertEnd(Node node) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insertEnd'");
+        if(this.last!=null)
+        {
+            Node head = this.last.getNext();
+            this.last.setNext(node);
+            node.setNext(head);
+        }
+        else
+        {
+            this.last = node;
+            node.setNext(node);
+        }
     }
 
     @Override
@@ -95,8 +147,7 @@ public class CircularLinkedList implements LinkedList {
 
     @Override
     public void insertBefore(Node node, int data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insertBefore'");
+
     }
 
     @Override
@@ -156,28 +207,18 @@ public class CircularLinkedList implements LinkedList {
 
     @Override
     public void printList() {
-       Node temp = this.head;
-       if(this.capacity==1)
-       {
-        System.out.println(this.head.getData()+"->head");
-       }
-       else
-       {
-        while(temp!=null && temp.getNext()!=this.head)
+
+        if(this.last!=null)
         {
-            System.out.print(temp.getData()+"->");
-            temp = temp.getNext();
+            Node temp = this.last.getNext();
+            do
+            {
+                System.out.print(temp.getData()+"->");
+                temp= temp.getNext();
+            }while(temp!=this.last.getNext());
+            System.out.print("head\n");
         }
-        if(this.capacity==0)
-        {
-            System.out.print("null\n");
-        }
-        else
-        {
-            System.out.print(temp.getData()+"->head\n"); 
-        }
-       }
-        
+
     }
 
     @Override
