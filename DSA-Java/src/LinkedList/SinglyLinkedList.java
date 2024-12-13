@@ -60,21 +60,14 @@ public class SinglyLinkedList implements LinkedList{
         return null;
     }
 
+    //getIndex
+
+
     @Override
     public void insertBegin(int data)
     {
         Node node = new Node(data);
-        if(this.head==null)
-        {
-            this.head=node;
-        }
-        else
-        {
-           node.setNext(this.head);
-           this.head = node;
-
-        }
-        this.capacity++;
+        this.insertBegin(node);
     } 
 
     @Override
@@ -97,20 +90,7 @@ public class SinglyLinkedList implements LinkedList{
     public void insertEnd(int data)
     {
         Node node = new Node(data);
-
-        if(this.head == null )
-        {
-            this.head =node;
-        }
-
-        Node temp = this.head;
-        while(temp!=null && temp.hasNext())
-        {
-            temp = temp.getNext();
-        }
-
-        temp.setNext(node);
-        this.capacity++;
+        this.insertEnd(node);
     }
 
     @Override
@@ -122,120 +102,47 @@ public class SinglyLinkedList implements LinkedList{
             this.head =node;
         }
 
-        Node temp = this.head;
-        while(temp!=null && temp.hasNext())
-        {
-            temp = temp.getNext();
-        }
-
-        temp.setNext(node);
-        this.capacity++;
-
-    }
-
-    @Override
-    public void insertMiddle(int pos, int data)
-    {
-        // if the pos is greater than the capacity then insert at the end
-        Node node= new Node(data);
-
-        if(pos>=this.capacity)
-        {
-            this.insertEnd(node);
-        }
-        else if(pos<=0)
-        {
-            this.insertBegin(node);
-        }
         else
         {
             Node temp = this.head;
-            while(pos>0)
+            while(temp!=null && temp.getNext()!=null)
             {
                 temp = temp.getNext();
-                pos--;
             }
-            this.insertAfter(temp, node);
+            temp.setNext(node);
         }
         this.capacity++;
 
     }
-
-    @Override
-    public void insertMiddle(int pos, Node node)
-    {
-            // if the pos is greater than the capacity then insert at the end
-            if(pos>=this.capacity)
-            {
-                this.insertEnd(node);
-            }
-            else if(pos<=0)
-            {
-                this.insertBegin(node);
-            }
-            else
-            {
-                Node temp = this.head;
-                while(pos>0)
-                {
-                    temp = temp.getNext();
-                    pos--;
-                }
-                this.insertAfter(temp, node);
-            }
-            this.capacity++;
-    
-            
-    }
-
 
     @Override
     public void insertBefore(Node node, int data)
     {
-
-        //Not handled the  condition for if insert before head position
-            if(node!=null)
-            {
-                Node newNode = new Node(data);
-                Node temp = this.head;
-                while(temp!=null && temp.getNext()==node)
-                {
-                    temp = temp.getNext();
-                }
-                
-                newNode.setNext(node);
-                temp.setNext(newNode); 
-                this.capacity++; 
-            }
-            
+        Node newNode = new Node(data);
+        this.insertBefore(node, newNode);
     }
 
 
     @Override
     public void insertBefore(Node node, Node newNode)
     {
-        if(node!=null)
+        Node head = this.head;
+        if(node==head)
         {
-            Node temp = this.head;
-            if(this.head==node)
+            insertBegin(newNode);
+        }
+        else
+        {
+            while(head.getNext()!=node)
             {
-                newNode.setNext(node);
-                this.head = newNode;
+                head=head.getNext();
             }
-            
-            else
-            {
-                while(temp!=null && temp.getNext()==node)
-                {
-                    temp = temp.getNext();
-                }
-                
-                newNode.setNext(node);
-                temp.setNext(newNode);
-            }
-          
+            newNode.setNext(head.getNext());
+            head.setNext(newNode);
             this.capacity++;
         }
+            
+        
         
             
     }
@@ -244,15 +151,8 @@ public class SinglyLinkedList implements LinkedList{
     @Override
     public void insertAfter(Node node, int data)
     {
-        if(node!=null)
-        {
-            Node newNode = new Node(data);
-            Node af = node.getNext();
-            newNode.setNext(af);
-            node.setNext(newNode);
-            this.capacity++;
-            
-        } 
+        Node newNode = new Node(data);
+        this.insertAfter(node,newNode);
             
     }
 
@@ -260,30 +160,76 @@ public class SinglyLinkedList implements LinkedList{
     @Override
     public void insertAfter(Node node, Node newNode)
     {
-        if(node!=null)
+        
+        if(node==null)
+        {
+            insertEnd(newNode);
+        }
+        else
         {
             Node af = node.getNext();
             newNode.setNext(af);
             node.setNext(newNode);
             this.capacity++;
-            
-        } 
-            
+        }
+        
     }
 
+
+    @Override
+    public void insertMiddle(int pos, int data)
+    {
+
+        Node node= new Node(data);
+        this.insertMiddle(pos, node);
+
+    }
+
+    @Override
+    public void insertMiddle(int pos, Node node)
+    {
+        if(pos<0)
+        {
+            System.out.println("Cannot be added, invalid position");
+        }
+    
+        else if(pos>this.capacity)
+        {
+            System.out.println("Cannot be addeded since position exceeds the capacity");
+        }
+        else
+        {
+            if(pos==0)
+            {
+                insertBefore(this.head, node);
+            }
+            else
+            {
+                Node temp=this.head;
+               
+                while((pos-1)>0)
+                {
+                    temp=temp.getNext();
+                    pos--;
+                }
+                this.insertAfter(temp,node);
+            }
+        }       
+    }
+
+    //Perfect till here
+
+    @Override
     public void deleteBegin()
     {
         if(this.capacity==0)
         {
-
+            System.out.println("Cannot be deleted since no element present, underflow");
         }
         else
         {
-            Node temp = this.head;
             this.head=this.head.getNext();
-            temp=null;
             this.capacity--;
-
         }
 
     }
@@ -294,61 +240,52 @@ public class SinglyLinkedList implements LinkedList{
     {
         if(this.capacity==0)
         {
-
+            System.out.println("Cannot be deleted since no element present, underflow");
         }
         if(this.capacity==1)
         {
-            Node temp = this.head;
             this.head=null;
-            temp =null;
             this.capacity--;
         }
         else
         {
             Node temp = this.head;
-            while(temp!=null && temp.getNext()!=null && temp.getNext().getNext()!=null)
+            while(temp.getNext()!=null && temp.getNext().getNext()!=null)
             {
                 temp=temp.getNext();
             }
-            
             temp.setNext(null);
             this.capacity--;
         }
 
     }
 
-
     @Override
     public void deleteBefore(Node node)
     {
-        if(node!=null)
-        {
-            Node temp = this.head;
-            if(this.head==node)
-            {
-                
-            }
-            if(this.head.getNext()==node)
-            {
-                this.deleteBegin();
-            }
-            else
-            {
-                while(temp!=null && temp.getNext()!=null && temp.getNext().getNext()!=null)
-                {
-                    if(temp.getNext().getNext()==node)
-                    {
-                        temp.setNext(node);
-                        this.capacity--;
-                    }
-                    else
-                    {
-                        temp = temp.getNext();
-                    }
-                }
-            }
         
+        Node temp = this.head;
+        if(this.head==node)
+        {
+            System.out.println("No element before this");
         }
+        Node prev=null;
+        while(temp.getNext()!=node)
+        {
+            prev=temp;
+            temp=temp.getNext();
+            
+        }
+        if(temp==this.head)
+        {
+            this.deleteBegin();
+        }
+        else
+        {
+            prev.setNext(temp.getNext());
+            this.capacity--;
+        }
+
     }
 
 
@@ -359,11 +296,15 @@ public class SinglyLinkedList implements LinkedList{
         {
             if(this.head==null)
             {
-
+                System.out.println("No element in the list");
+            }
+            if(node.getNext()==null)
+            {
+                System.out.println("No element present afte this node in list");
             }
             if(node.getNext()!=null)
             {
-                node.setNext(node.getNext());
+                node.setNext(node.getNext().getNext());
                 this.capacity--;
             }
         }
@@ -374,27 +315,30 @@ public class SinglyLinkedList implements LinkedList{
     @Override
     public void deleteMiddle(int pos)
     {
-        Node temp = this.head;
+        
         if(pos>=this.capacity)
         {
-            this.deleteEnd();
+            System.out.println("Invalid Position, exceed the capacity");
         }
-        else if(pos<=0)
+        else if(pos<0)
         {
-            this.deleteBegin();
+            System.out.println("Invalid Postion, cannot be negative");
         }
         else 
         {
-            pos--;
-            while(pos>0)
+            if(pos==0)
             {
-                temp = temp.getNext();
+                this.deleteBegin();
+            }
+            Node temp = this.head;
+            while((pos-1)>0)
+            {
+                temp=temp.getNext();
                 pos--;
-
             }
             this.deleteAfter(temp);
+            this.capacity--;
         }
-    
     }
 
     public void reverseList()
@@ -413,8 +357,6 @@ public class SinglyLinkedList implements LinkedList{
                 curr=af;
             }
             this.head = prev;
-
-
         }
 
     }
